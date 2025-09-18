@@ -1,0 +1,35 @@
+# QUICK DEPLOYMENT COMMANDS FÜR VPS
+# Diese Commands auf dem VPS ausführen, nachdem truck-signs-api.tar.gz hochgeladen wurde
+
+# 1. Docker installieren (falls nötig)
+sudo apt update && sudo apt install -y docker.io
+sudo systemctl start docker && sudo systemctl enable docker
+sudo usermod -aG docker $USER
+
+# 2. Projekt entpacken
+tar -xzf truck-signs-api.tar.gz && cd truck_signs_api-main
+
+# 3. Environment konfigurieren
+cp docker.env.production docker.env
+
+# 4. SECRET_KEY generieren und setzen
+python3 -c "from django.core.management.utils import get_random_secret_key; print('SECRET_KEY=' + get_random_secret_key())" >> docker.env.new
+echo "DJANGO_SUPERUSER_PASSWORD=AdminPass123!" >> docker.env.new
+tail -n 2 docker.env.new >> docker.env && rm docker.env.new
+
+# 5. Docker Image bauen
+docker build -t truck-signs-api:latest .
+
+# 6. Container starten auf Port 8020
+docker run -d --name truck-signs-api -p 8020:8000 --env-file docker.env --restart unless-stopped truck-signs-api:latest
+
+# 7. Status prüfen
+docker ps && docker logs truck-signs-api
+
+# 8. API testen
+curl http://localhost:8020/truck-signs/categories/
+
+echo "🎉 Deployment completed!"
+echo "🌐 Application: http://91.99.193.112:8020"
+echo "🔧 Admin Panel: http://91.99.193.112:8020/admin/"
+echo "👤 Admin Login: admin@trucksigns.com / AdminPass123!"
