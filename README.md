@@ -13,12 +13,12 @@
 
 [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg?style=flat-square)](https://github.com)
 [![Code Coverage](https://img.shields.io/badge/Coverage-95%25-brightgreen.svg?style=flat-square)](https://github.com)
-[![API Status](https://img.shields.io/badge/API-Online-success.svg?style=flat-square)](http://91.99.193.112:8020)
+[![API Status](https://img.shields.io/badge/API-Online-success.svg?style=flat-square)](https://your-api-domain.com)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/yourusername/truck-signs-api?style=social)](https://github.com)
+[![GitHub Stars](https://img.shields.io/github/stars/yourusername/truck-signs-api?style=social)](https://github.com/yourusername/truck-signs-api)
 
-**🌐 Live Demo:** [http://91.99.193.112:8020](http://91.99.193.112:8020)  
-**📋 Admin Panel:** [http://91.99.193.112:8020/admin](http://91.99.193.112:8020/admin)  
+**🌐 Live Demo:** [https://your-api-domain.com](https://your-api-domain.com)  
+**📋 Admin Panel:** [https://your-api-domain.com/admin](https://your-api-domain.com/admin)  
 **📊 API Metrics:** ![Uptime](https://img.shields.io/badge/Uptime-99.9%25-brightgreen.svg) ![Response Time](https://img.shields.io/badge/Response%20Time-<200ms-brightgreen.svg)
 
 ---
@@ -157,8 +157,8 @@ graph TD
 
 ### **1. Clone the Repository**
 ```bash
-git clone <repository-url>
-cd truck_signs_api-main
+git clone https://github.com/yourusername/truck-signs-api.git
+cd truck-signs-api
 ```
 
 ### **2. Environment Configuration**
@@ -178,16 +178,16 @@ docker build -t truck-signs-api:latest .
 # Run the container
 docker run -d \
   --name truck-signs-api \
-  -p 8020:8000 \
+  -p 8000:8000 \
   --env-file docker.env \
   --restart unless-stopped \
   truck-signs-api:latest
 ```
 
 ### **4. Access Your Application**
-- **API Base URL:** http://localhost:8020
-- **Admin Panel:** http://localhost:8020/admin
-- **API Documentation:** http://localhost:8020/truck-signs/
+- **API Base URL:** http://localhost:8000
+- **Admin Panel:** http://localhost:8000/admin
+- **API Documentation:** http://localhost:8000/truck-signs/
 
 ---
 
@@ -227,9 +227,9 @@ DEBUG=True
 DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
 
 # Database (PostgreSQL)
-        DB_NAME=trucksigns_db
-        DB_USER=trucksigns_user
-DB_PASSWORD=your-password
+        DB_NAME=your_database_name
+        DB_USER=your_database_user
+DB_PASSWORD=your-secure-password
         DB_HOST=localhost
         DB_PORT=5432
 
@@ -238,13 +238,13 @@ STRIPE_PUBLISHABLE_KEY=pk_test_your_key
 STRIPE_SECRET_KEY=sk_test_your_key
 
 # Email Configuration
-EMAIL_HOST_USER=your-email@gmail.com
-EMAIL_HOST_PASSWORD=your-app-password
+EMAIL_HOST_USER=your-email@domain.com
+EMAIL_HOST_PASSWORD=your-app-specific-password
 
 # Media Storage (Optional)
 CLOUD_NAME=your-cloudinary-name
-CLOUD_API_KEY=your-api-key
-CLOUD_API_SECRET=your-api-secret
+CLOUD_API_KEY=your-cloudinary-api-key
+CLOUD_API_SECRET=your-cloudinary-secret
 ```
 
 ---
@@ -318,7 +318,7 @@ POST   /truck-signs/comments/            # Submit review
 ```json
 {
   "count": 25,
-  "next": "http://91.99.193.112:8020/truck-signs/products/?page=2",
+  "next": "https://your-api-domain.com/truck-signs/products/?page=2",
   "previous": null,
   "results": [
     {
@@ -330,7 +330,7 @@ POST   /truck-signs/comments/            # Submit review
         "id": 1,
         "name": "Truck Signs"
       },
-      "image": "https://res.cloudinary.com/demo/image/upload/premium-logo.jpg",
+      "image": "https://res.cloudinary.com/your-cloud/image/upload/premium-logo.jpg",
       "is_active": true,
       "created_at": "2024-01-15T10:30:00Z"
     }
@@ -352,11 +352,11 @@ POST   /truck-signs/comments/            # Submit review
     "lettering_items": [
       {
         "category_id": 1,
-        "text": "ACME TRUCKING"
+        "text": "YOUR COMPANY NAME"
       },
       {
         "category_id": 2,
-        "text": "DOT#123456"
+        "text": "DOT#987654"
       }
     ]
   },
@@ -382,7 +382,7 @@ POST   /truck-signs/comments/            # Submit review
   "order_number": "TS-2024-001234",
   "status": "pending_payment",
   "total_amount": "45.99",
-  "payment_url": "https://checkout.stripe.com/pay/cs_live_...",
+  "payment_url": "https://checkout.stripe.com/pay/cs_test_...",
   "estimated_delivery": "2024-02-01",
   "created_at": "2024-01-15T14:30:00Z"
 }
@@ -595,8 +595,8 @@ We welcome contributions! Please follow these steps:
 ## 📚 **Documentation & Resources**
 
 ### **API Documentation**
-- **Interactive API Docs:** [http://91.99.193.112:8020/truck-signs/](http://91.99.193.112:8020/truck-signs/)
-- **Admin Interface:** [http://91.99.193.112:8020/admin/](http://91.99.193.112:8020/admin/)
+- **Interactive API Docs:** [https://your-api-domain.com/truck-signs/](https://your-api-domain.com/truck-signs/)
+- **Admin Interface:** [https://your-api-domain.com/admin/](https://your-api-domain.com/admin/)
 
 ### **Technology Documentation**
 - [Django Official Documentation](https://docs.djangoproject.com/)
@@ -619,9 +619,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 **Support & Contact**
 
-- **Issues:** [GitHub Issues](https://github.com/your-repo/issues)
-- **Documentation:** [Wiki](https://github.com/your-repo/wiki)
-- **Email:** support@trucksigns.com
+- **Issues:** [GitHub Issues](https://github.com/yourusername/truck-signs-api/issues)
+- **Documentation:** [Wiki](https://github.com/yourusername/truck-signs-api/wiki)
+- **Email:** support@your-domain.com
 
 ---
 
