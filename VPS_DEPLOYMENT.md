@@ -1,7 +1,13 @@
 # 🚀 VPS Deployment Anleitung - Truck Signs API
 
+**Production Deployment Guide for Virtual Private Server**
+
+[![VPS](https://img.shields.io/badge/VPS-Ready-success.svg?style=flat-square)](http://91.99.193.112:8020)
+[![Production](https://img.shields.io/badge/Production-Tested-brightgreen.svg?style=flat-square)](http://91.99.193.112:8020)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-blue.svg?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
+
 ## 📋 Überblick
-Diese Anleitung zeigt, wie du die Truck Signs API auf deinem VPS (91.99.193.112) auf Port 8020 deployest.
+Diese umfassende Anleitung zeigt, wie du die Truck Signs API professionell auf deinem VPS (91.99.193.112) auf Port 8020 deployest - sowohl automatisiert als auch manuell.
 
 ## 🔧 Voraussetzungen auf dem VPS
 

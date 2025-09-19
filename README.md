@@ -706,6 +706,17 @@ We welcome contributions from developers of all skill levels!
 
 ---
 
+## 📚 **Additional Documentation**
+
+For detailed setup and deployment instructions, check out these comprehensive guides:
+
+- **🐳 [Docker Setup Guide](./DOCKER_README.md)** - Complete Docker configuration, troubleshooting, and advanced options
+- **🚀 [VPS Deployment Guide](./VPS_DEPLOYMENT.md)** - Production deployment on VPS with automated and manual deployment scripts
+- **⚙️ Environment Variables** - Comprehensive list of all configuration options
+- **🔧 Troubleshooting** - Common issues and solutions for deployment
+
+---
+
 ## 📄 **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

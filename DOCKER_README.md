@@ -1,6 +1,11 @@
 # 🐳 Docker Setup für Truck Signs API
 
-Dieses Dokument beschreibt, wie du die Truck Signs API mit Docker ausführst.
+**Comprehensive Docker Deployment Guide**
+
+[![Docker](https://img.shields.io/badge/Docker-Supported-blue.svg?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
+[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg?style=flat-square)](https://github.com)
+
+Dieses Dokument beschreibt detailliert, wie du die Truck Signs API mit Docker ausführst, konfigurierst und deployest.
 
 ## 📋 Voraussetzungen
 
