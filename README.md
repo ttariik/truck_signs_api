@@ -1,158 +1,468 @@
 <div align="center">
 
-![Truck Signs](./screenshots/Truck_Signs_logo.png)
+![Truck Signs Logo](./screenshots/Truck_Signs_logo.png)
 
-# Signs for Trucks
+# 🚛 Truck Signs API
 
-![Python version](https://img.shields.io/badge/Pythn-3.8.10-4c566a?logo=python&&longCache=true&logoColor=white&colorB=pink&style=flat-square&colorA=4c566a) ![Django version](https://img.shields.io/badge/Django-2.2.8-4c566a?logo=django&&longCache=truelogoColor=white&colorB=pink&style=flat-square&colorA=4c566a) ![Django-RestFramework](https://img.shields.io/badge/Django_Rest_Framework-3.12.4-red.svg?longCache=true&style=flat-square&logo=django&logoColor=white&colorA=4c566a&colorB=pink)
+**Professional E-Commerce API for Custom Truck Vinyl Signs & Letterings**
 
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Django](https://img.shields.io/badge/Django-2.2.8-green.svg?style=for-the-badge&logo=django&logoColor=white)](https://djangoproject.com)
+[![DRF](https://img.shields.io/badge/Django_REST-3.12.4-red.svg?style=for-the-badge&logo=django&logoColor=white)](https://django-rest-framework.org)
+[![Docker](https://img.shields.io/badge/Docker-Enabled-blue.svg?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-</div>
-
-## Table of Contents
-* [Description](#description)
-* [Installation](#installation)
-* [Screenshots of the Django Backend Admin Panel](#screenshots)
-* [Useful Links](#useful_links)
-
-
-
-## Description
-
-__Signs for Trucks__ is an online store to buy pre-designed vinyls with custom lines of letters (often call truck letterings). The store also allows clients to upload their own designs and to customize them on the website as well. Aside from the vinyls that are the main product of the store, clients can also purchase simple lettering vinyls with no truck logo, a fire extinguisher vinyl, and/or a vinyl with only the truck unit number (or another number selected by the client).
-
-### Settings
-
-The __settings__ folder inside the trucks_signs_designs folder contains the different setting's configuration for each environment (so far the environments are development, docker testing, and production). Those files are extensions of the base.py file which contains the basic configuration shared among the different environments (for example, the value of the template directory location). In addition, the .env file inside this folder has the environment variables that are mostly sensitive information and should always be configured before use. By default, the environment in use is the decker testing. To change between environments modify the \_\_init.py\_\_ file.
-
-### Models
-
-Most of the models do what can be inferred from their name. The following dots are notes about some of the models to make clearer their propose:
-- __Category Model:__ The category of the vinyls in the store. It contains the title of the category as well as the basic properties shared among products that belong to a same category. For example, _Truck Logo_ is a category for all vinyls that has a logo of a truck plus some lines of letterings (note that the vinyls are instances of the model _Product_). Another category is _Fire Extinguisher_, that is for all vinyls that has a logo of a fire extinguisher. 
-- __Lettering Item Category:__ This is the category of the lettering, for example: _Company Name_, _VIM NUMBER_, ... Each has a different pricing.
-- __Lettering Item Variations:__ This contains a foreign key to the __Lettering Item Category__ and the text added by the client.
-- __Product Variation:__ This model has the original product as a foreign key, plus the lettering lines (instances of the __Lettering Item Variations__ model) added by the client.
-- __Order:__ Contains the cart (in this case the cart is just a vinyl as only one product can be purchased each time). It also contains the contact and shipping information of the client.
-- __Payment:__ It has the payment information such as the time of the purchase and the client id in Stripe.
-
-To manage the payments, the payment gateway in use is [Stripe](https://stripe.com/).
-
-### Brief Explanation of the Views
-
-Most of the views are CBV imported from _rest_framework.generics_, and they allow the backend api to do the basic CRUD operations expected, and so they inherit from the _ListAPIView_, _CreateAPIView_, _RetrieveAPIView_, ..., and so on.
-
-The behavior of some of the views had to be modified to address functionalities such as creation of order and payment, as in this case, for example, both functionalities are implemented in the same view, and so a _GenericAPIView_ was the view from which it inherits. Another example of this is the _UploadCustomerImage_ View that takes the vinyl template uploaded by the clients and creates a new product based on it.
-
-## Installation
-
-1. Clone the repo:
-    ```bash
-    git clone <INSERT URL>
-    ```
-1. Configure a virtual env and set up the database. See [Link for configuring Virtual Environment](https://docs.python-guide.org/dev/virtualenvs/) and [Link for Database setup](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04).
-1. Configure the environment variables.
-    1. Copy the content of the example env file that is inside the truck_signs_designs folder into a .env file:
-        ```bash
-        cd truck_signs_designs/settings
-        cp simple_env_config.env .env
-        ```
-    1. The new .env file should contain all the environment variables necessary to run all the django app in all the environments. However, the only needed variables for the development environment to run are the following:
-        ```bash
-        SECRET_KEY
-        DB_NAME
-        DB_USER
-        DB_PASSWORD
-        DB_HOST
-        DB_PORT
-        STRIPE_PUBLISHABLE_KEY
-        STRIPE_SECRET_KEY
-        EMAIL_HOST_USER
-        EMAIL_HOST_PASSWORD
-        ```
-    1. For the database, the default configurations should be:
-        ```bash
-        DB_NAME=trucksigns_db
-        DB_USER=trucksigns_user
-        DB_PASSWORD=supertrucksignsuser!
-        DB_HOST=localhost
-        DB_PORT=5432
-        ```
-    1. The SECRET_KEY is the django secret key. To generate a new one see: [Stackoverflow Link](https://stackoverflow.com/questions/41298963/is-there-a-function-for-generating-settings-secret-key-in-django)
-
-    1. **NOTE: not required for exercise**<br/>The STRIPE_PUBLISHABLE_KEY and the STRIPE_SECRET_KEY can be obtained from a developer account in [Stripe](https://stripe.com/). 
-        - To retrieve the keys from a Stripe developer account follow the next instructions:
-            1. Log in into your Stripe developer account (stripe.com) or create a new one (stripe.com > Sign Up). This should redirect to the account's Dashboard.
-            1. Go to Developer > API Keys, and copy both the Publishable Key and the Secret Key.
-
-    1. The EMAIL_HOST_USER and the EMAIL_HOST_PASSWORD are the credentials to send emails from the website when a client makes a purchase. This is currently disable, but the code to activate this can be found in views.py in the create order view as comments. Therefore, any valid email and password will work.
-
-1. Run the migrations and then the app:
-    ```bash
-    python manage.py migrate
-    python manage.py runserver
-    ```
-1. Congratulations =) !!! The App should be running in [localhost:8000](http://localhost:8000)
-1. (Optional step) To create a super user run:
-    ```bash
-    python manage.py createsuperuser
-    ```
-
-
-__NOTE:__ To create Truck vinyls with Truck logos in them, first create the __Category__ Truck Sign, and then the __Product__ (can have any name). This is to make sure the frontend retrieves the Truck vinyls for display in the Product Grid as it only fetches the products of the category Truck Sign.
+**🌐 Live Demo:** [http://91.99.193.112:8020](http://91.99.193.112:8020)  
+**📋 Admin Panel:** [http://91.99.193.112:8020/admin](http://91.99.193.112:8020/admin)
 
 ---
 
-<a name="screenshots"></a>
+</div>
 
-## Screenshots of the Django Backend Admin Panel
+## 🎯 **Overview**
 
-### Mobile View
+**Truck Signs API** is a comprehensive, production-ready e-commerce backend solution designed specifically for custom truck vinyl signs and letterings. Built with modern Django REST Framework architecture, this API powers a complete online store where customers can purchase pre-designed vinyls, upload custom designs, and personalize truck letterings with professional-grade customization tools.
+
+### ✨ **Key Features**
+
+- 🛒 **Complete E-Commerce Solution** - Full cart, checkout, and payment processing
+- 🎨 **Custom Design Upload** - Client-side design upload and customization
+- 📱 **RESTful API Architecture** - Clean, scalable API endpoints
+- 🔐 **Stripe Payment Integration** - Secure payment processing
+- 📧 **Email Notifications** - Automated order confirmations
+- 🖼️ **Image Management** - Cloudinary integration for media storage
+- 🐳 **Docker Ready** - Complete containerization with production deployment
+- 🔒 **Production Security** - HTTPS, CORS, and security best practices
+- 📊 **Admin Dashboard** - Comprehensive Django admin interface
+
+---
+
+## 🏗️ **Architecture & Technology Stack**
+
+### **Backend Framework**
+- **Django 2.2.8** - Robust web framework
+- **Django REST Framework 3.12.4** - API development toolkit
+- **Python 3.8+** - Modern Python runtime
+
+### **Database & Storage**
+- **PostgreSQL** - Primary database (production)
+- **SQLite** - Development/testing database
+- **Cloudinary** - Cloud-based image storage and optimization
+
+### **Payment & Communication**
+- **Stripe API** - Secure payment processing
+- **SMTP Email** - Automated notifications
+
+### **DevOps & Deployment**
+- **Docker** - Containerization and deployment
+- **Gunicorn** - WSGI HTTP Server
+- **WhiteNoise** - Static file serving
+- **CORS Headers** - Cross-origin request handling
+
+### **Security & Performance**
+- **Environment Variables** - Secure configuration management
+- **HTTPS Ready** - SSL/TLS support
+- **Static File Optimization** - Compressed and cached assets
+
+---
+
+## 🚀 **Quick Start with Docker**
+
+### **Prerequisites**
+- Docker installed on your system
+- Git for cloning the repository
+
+### **1. Clone the Repository**
+```bash
+git clone <repository-url>
+cd truck_signs_api-main
+```
+
+### **2. Environment Configuration**
+```bash
+# Copy the example environment file
+cp docker.env.example docker.env
+
+# Edit the environment variables (required)
+nano docker.env
+```
+
+### **3. Build and Run with Docker**
+```bash
+# Build the Docker image
+docker build -t truck-signs-api:latest .
+
+# Run the container
+docker run -d \
+  --name truck-signs-api \
+  -p 8020:8000 \
+  --env-file docker.env \
+  --restart unless-stopped \
+  truck-signs-api:latest
+```
+
+### **4. Access Your Application**
+- **API Base URL:** http://localhost:8020
+- **Admin Panel:** http://localhost:8020/admin
+- **API Documentation:** http://localhost:8020/truck-signs/
+
+---
+
+## 🛠️ **Development Setup**
+
+### **Local Development**
+```bash
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# or
+venv\Scripts\activate     # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment variables
+cd truck_signs_designs/settings
+cp simple_env_config.env .env
+# Edit .env with your configuration
+
+# Run migrations
+python manage.py migrate
+
+# Create superuser
+python manage.py createsuperuser
+
+# Start development server
+python manage.py runserver
+```
+
+### **Required Environment Variables**
+```bash
+# Django Configuration
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+
+# Database (PostgreSQL)
+DB_NAME=trucksigns_db
+DB_USER=trucksigns_user
+DB_PASSWORD=your-password
+DB_HOST=localhost
+DB_PORT=5432
+
+# Payment Processing
+STRIPE_PUBLISHABLE_KEY=pk_test_your_key
+STRIPE_SECRET_KEY=sk_test_your_key
+
+# Email Configuration
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password
+
+# Media Storage (Optional)
+CLOUD_NAME=your-cloudinary-name
+CLOUD_API_KEY=your-api-key
+CLOUD_API_SECRET=your-api-secret
+```
+
+---
+
+## 📊 **Database Models & Architecture**
+
+### **Core Models**
+
+#### **🏷️ Category**
+Product categories for different vinyl types (Truck Logo, Fire Extinguisher, etc.)
+
+#### **📦 Product**
+Main product model with pricing, images, and category relationships
+
+#### **✍️ Lettering System**
+- **LetteringItemCategory** - Types of letterings (Company Name, VIN Number, etc.)
+- **LetteringItemVariation** - Customer text input for each lettering type
+- **ProductVariation** - Complete product with customer customizations
+
+#### **🛒 Order Management**
+- **Order** - Customer orders with contact and shipping information
+- **Payment** - Stripe payment processing and tracking
+
+#### **💬 Customer Interaction**
+- **Comment** - Customer reviews and feedback system
+
+---
+
+## 🌐 **API Endpoints**
+
+### **Product Management**
+```
+GET    /truck-signs/categories/          # List all categories
+GET    /truck-signs/categories/{id}/     # Category details
+GET    /truck-signs/products/            # List all products
+GET    /truck-signs/products/{id}/       # Product details
+POST   /truck-signs/products/            # Create product (admin)
+```
+
+### **Order Processing**
+```
+POST   /truck-signs/orders/              # Create new order
+GET    /truck-signs/orders/{id}/         # Order details
+POST   /truck-signs/payments/            # Process payment
+```
+
+### **Custom Designs**
+```
+POST   /truck-signs/upload-design/       # Upload custom design
+POST   /truck-signs/lettering-items/     # Add lettering variations
+```
+
+### **Customer Features**
+```
+GET    /truck-signs/comments/            # Product reviews
+POST   /truck-signs/comments/            # Submit review
+```
+
+---
+
+## 🖼️ **Screenshots**
+
+### **Admin Panel - Desktop View**
 
 <div align="center">
 
-![alt text](./screenshots/Admin_Panel_View_Mobile.png)  ![alt text](./screenshots/Admin_Panel_View_Mobile_2.png) ![alt text](./screenshots/Admin_Panel_View_Mobile_3.png)
+![Admin Panel Desktop](./screenshots/Admin_Panel_View.png)
+
+*Modern Django Admin Interface with Custom Styling*
 
 </div>
----
-
-### Desktop View
-
-![alt text](./screenshots/Admin_Panel_View.png)
 
 ---
 
-![alt text](./screenshots/Admin_Panel_View_2.png)
+<div align="center">
+
+![Admin Panel Products](./screenshots/Admin_Panel_View_2.png)
+
+*Product Management Interface*
+
+</div>
 
 ---
 
-![alt text](./screenshots/Admin_Panel_View_3.png)
+<div align="center">
 
+![Admin Panel Orders](./screenshots/Admin_Panel_View_3.png)
 
+*Order Management and Analytics*
 
-<a name="useful_links"></a>
-## Useful Links
+</div>
 
-### Postgresql Database
-- Setup Database: [Digital Ocean Link for Django Deployment on VPS](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04)
+### **Admin Panel - Mobile Responsive**
 
-### Docker
-- [Docker Oficial Documentation](https://docs.docker.com/)
-- Dockerizing Django, PostgreSQL, guinicorn, and Nginx:
-    - Github repo of sunilale0: [Link](https://github.com/sunilale0/django-postgresql-gunicorn-nginx-dockerized/blob/master/README.md#nginx)
-    - Michael Herman article on testdriven.io: [Link](https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/)
+<div align="center">
 
-### Django and DRF
-- [Django Official Documentation](https://docs.djangoproject.com/en/4.0/)
-- Generate a new secret key: [Stackoverflow Link](https://stackoverflow.com/questions/41298963/is-there-a-function-for-generating-settings-secret-key-in-django)
-- Modify the Django Admin:
-    - Small modifications (add searching, columns, ...): [Link](https://realpython.com/customize-django-admin-python/)
-    - Modify Templates and css: [Link from Medium](https://medium.com/@brianmayrose/django-step-9-180d04a4152c)
-- [Django Rest Framework Official Documentation](https://www.django-rest-framework.org/)
-- More about Nested Serializers: [Stackoverflow Link](https://stackoverflow.com/questions/51182823/django-rest-framework-nested-serializers)
-- More about GenericViews: [Testdriver.io Link](https://testdriven.io/blog/drf-views-part-2/)
+![Mobile Admin 1](./screenshots/Admin_Panel_View_Mobile.png) ![Mobile Admin 2](./screenshots/Admin_Panel_View_Mobile_2.png) ![Mobile Admin 3](./screenshots/Admin_Panel_View_Mobile_3.png)
 
-### Miscellaneous
-- Create Virual Environment with Virtualenv and Virtualenvwrapper: [Link](https://docs.python-guide.org/dev/virtualenvs/)
-- [Configure CORS](https://www.stackhawk.com/blog/django-cors-guide/)
-- [Setup Django with Cloudinary](https://cloudinary.com/documentation/django_integration)
+*Fully Responsive Mobile Admin Interface*
 
+</div>
+
+### **Frontend Integration Examples**
+
+<div align="center">
+
+![Landing Page Mobile](./screenshots/Landing_Website_Mobile.png)
+
+*Mobile Landing Page Integration*
+
+</div>
+
+---
+
+<div align="center">
+
+![Logo Grid](./screenshots/Logo_Grid.png)
+
+*Product Grid Layout*
+
+</div>
+
+---
+
+<div align="center">
+
+![Logo Grid Mobile 1](./screenshots/Logo_Grid_Mobile_1.png) ![Logo Grid Mobile 2](./screenshots/Logo_Grid_Mobile_2.png)
+
+*Mobile Product Grid Views*
+
+</div>
+
+---
+
+<div align="center">
+
+![Product Detail](./screenshots/Logo_Detail.png)
+
+*Product Detail Page*
+
+</div>
+
+---
+
+<div align="center">
+
+![Product Detail Mobile](./screenshots/Logo_Detail_Mobile.png) ![Detail Form Mobile](./screenshots/Logo_Detail_Form_Mobile.png)
+
+*Mobile Product Detail and Customization Form*
+
+</div>
+
+---
+
+<div align="center">
+
+![Pricing Grid](./screenshots/Pricing_Grid.png)
+
+*Pricing and Service Overview*
+
+</div>
+
+---
+
+<div align="center">
+
+![Pricing Mobile](./screenshots/Pricing_Grid_Mobile.png)
+
+*Mobile Pricing Layout*
+
+</div>
+
+---
+
+## 🚢 **Production Deployment**
+
+### **Docker Production Setup**
+
+The application is fully containerized and production-ready:
+
+```bash
+# Production environment file
+cp docker.env.production docker.env
+
+# Build production image
+docker build -t truck-signs-api:production .
+
+# Deploy with production settings
+docker run -d \
+  --name truck-signs-api-prod \
+  -p 80:8000 \
+  --env-file docker.env \
+  --restart unless-stopped \
+  truck-signs-api:production
+```
+
+### **Production Features**
+- ✅ **Security Headers** - HSTS, XSS Protection, Content Type Sniffing
+- ✅ **Static File Optimization** - WhiteNoise with compression
+- ✅ **Database Optimization** - PostgreSQL with connection pooling
+- ✅ **Error Handling** - Comprehensive logging and monitoring
+- ✅ **Auto-restart** - Container restart policies
+- ✅ **Environment Isolation** - Secure environment variable management
+
+---
+
+## 🔧 **Development Enhancements**
+
+### **What We've Added**
+
+#### **🐳 Complete Docker Integration**
+- Multi-stage Dockerfile for optimized builds
+- Production-ready container configuration
+- Environment-specific settings management
+- Automated static file collection and database migrations
+
+#### **🔒 Enhanced Security**
+- WhiteNoise middleware for secure static file serving
+- CORS configuration for cross-origin requests
+- Environment-based settings isolation
+- Secure secret key management
+
+#### **⚡ Performance Optimizations**
+- Static file compression and caching
+- Database query optimization
+- Gunicorn WSGI server configuration
+- Optimized Docker image layers
+
+#### **📱 API Improvements**
+- RESTful endpoint standardization
+- Comprehensive error handling
+- Response optimization
+- CORS support for frontend integration
+
+#### **🛠️ DevOps Ready**
+- Automated deployment scripts
+- Health check endpoints
+- Logging configuration
+- Container orchestration support
+
+---
+
+## 🤝 **Contributing**
+
+We welcome contributions! Please follow these steps:
+
+1. **Fork the repository**
+2. **Create a feature branch** (`git checkout -b feature/amazing-feature`)
+3. **Commit your changes** (`git commit -m 'Add amazing feature'`)
+4. **Push to the branch** (`git push origin feature/amazing-feature`)
+5. **Open a Pull Request**
+
+### **Development Guidelines**
+- Follow PEP 8 Python style guidelines
+- Write comprehensive tests for new features
+- Update documentation for API changes
+- Ensure Docker compatibility
+
+---
+
+## 📚 **Documentation & Resources**
+
+### **API Documentation**
+- **Interactive API Docs:** [http://91.99.193.112:8020/truck-signs/](http://91.99.193.112:8020/truck-signs/)
+- **Admin Interface:** [http://91.99.193.112:8020/admin/](http://91.99.193.112:8020/admin/)
+
+### **Technology Documentation**
+- [Django Official Documentation](https://docs.djangoproject.com/)
+- [Django REST Framework](https://www.django-rest-framework.org/)
+- [Docker Documentation](https://docs.docker.com/)
+- [Stripe API Documentation](https://stripe.com/docs/api)
+- [Cloudinary Documentation](https://cloudinary.com/documentation/)
+
+### **Deployment Guides**
+- [Digital Ocean Django Deployment](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-gunicorn-and-nginx-on-ubuntu)
+- [Docker Production Best Practices](https://docs.docker.com/develop/dev-best-practices/)
+
+---
+
+## 📄 **License**
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👥 **Support & Contact**
+
+- **Issues:** [GitHub Issues](https://github.com/your-repo/issues)
+- **Documentation:** [Wiki](https://github.com/your-repo/wiki)
+- **Email:** support@trucksigns.com
+
+---
+
+<div align="center">
+
+**Built with ❤️ using Django REST Framework**
+
+*Professional E-Commerce API for the Modern Web*
+
+[![Python](https://img.shields.io/badge/Made%20with-Python-blue.svg?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Django](https://img.shields.io/badge/Powered%20by-Django-green.svg?style=flat-square&logo=django&logoColor=white)](https://djangoproject.com)
+[![Docker](https://img.shields.io/badge/Deployed%20with-Docker-blue.svg?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
+
+</div>
